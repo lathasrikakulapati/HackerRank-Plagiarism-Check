@@ -1,0 +1,6 @@
+selenium
+mysql-connector-python
+fastapi
+uvicorn
+scikit-learn
+sentence-transformers
