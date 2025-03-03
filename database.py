@@ -1,20 +1,25 @@
 import mysql.connector
-from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE
 
-def get_connection():
-    return mysql.connector.connect(
-        host=MYSQL_HOST,
-        user=MYSQL_USER,
-        password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE
-    )
+# Connect to MySQL Database
+db = mysql.connector.connect(
+    host="localhost",
+    user="your_mysql_user",
+    password="your_mysql_password",
+    database="hackerrank"
+)
+cursor = db.cursor()
 
-def store_submission(user_id, problem_id, code):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-        INSERT INTO submissions (user_id, problem_id, submission_code, timestamp)
-        VALUES (%s, %s, %s, NOW())
-    """, (user_id, problem_id, code))
-    conn.commit()
-    conn.close()
+# Function to Insert Data into MySQL
+def store_submission(username, problem, score, code):
+    query = "INSERT INTO submissions (username, problem, score, code) VALUES (%s, %s, %s, %s)"
+    values = (username, problem, score, code)
+    cursor.execute(query, values)
+    db.commit()
+
+# Insert Extracted Data
+for submission in data:
+    store_submission(submission["username"], submission["problem"], submission["score"], submission["code"])
+
+# Close Database Connection
+cursor.close()
+db.close()
